@@ -20,16 +20,30 @@ class Document {
   });
 
   factory Document.fromFirestore(Map<String, dynamic> data, String id) {
-    return Document(
-      id: id,
-      name: data['name'] ?? '',
-      url: data['url'] ?? '',
-      category: data['category'] ?? 'user',
-      added: (data['added'] as Timestamp).toDate(), // ← Timestamp теперь распознается
-      userId: data['userId'] ?? '',
-      cached: data['cached'] ?? false,
-    );
+  final rawAdded = data['added'];
+  DateTime parsedAdded;
+
+  if (rawAdded is Timestamp) {
+    parsedAdded = rawAdded.toDate();
+  } else if (rawAdded is String) {
+    parsedAdded = DateTime.parse(rawAdded);
+  } else if (rawAdded is DateTime) {
+    parsedAdded = rawAdded;
+  } else {
+    // fallback: текущее время или null, если логика требует
+    parsedAdded = DateTime.now();
   }
+
+  return Document(
+    id: id,
+    name: data['name'] ?? '',
+    url: data['url'] ?? '',
+    category: data['category'] ?? 'user',
+    added: parsedAdded,
+    userId: data['userId'] ?? '',
+    cached: data['cached'] ?? false,
+  );
+}
 
   Map<String, dynamic> toFirestore() {
     return {
