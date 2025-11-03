@@ -9,19 +9,14 @@ class FirestoreService {
 
   /// Получение потока всех задач пользователя
   Stream<List<Task>> getTasks(String userId) {
-    return _firestore
-        .collection('tasks')
-        .where('userId', isEqualTo: userId)
-        // .orderBy('createdAt', descending: true)
-        .snapshots()
-      .map((snapshot) {
-        final tasks = snapshot.docs
-            .map((doc) => Task.fromFirestore(doc.data(), doc.id))
-            .toList();
-        // Сортируем на клиенте
-        tasks.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-        return tasks;
-      });
+  return _firestore
+      .collection('tasks')
+      .where('userId', isEqualTo: userId)
+      .orderBy('createdAt', descending: true)  // ← РАСКОММЕНТИРУЙТЕ
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .map((doc) => Task.fromFirestore(doc.data(), doc.id))
+          .toList());
   }
 
   /// Обновление статуса задачи
