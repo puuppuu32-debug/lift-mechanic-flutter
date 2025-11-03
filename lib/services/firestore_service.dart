@@ -10,9 +10,9 @@ class FirestoreService {
   /// Получение потока всех задач пользователя
   Stream<List<Task>> getTasks(String userId) {
   return _firestore
-      .collection('tasks')
+      .collection('tasks_flutter')
       .where('userId', isEqualTo: userId)
-      .orderBy('createdAt', descending: true)  // ← РАСКОММЕНТИРУЙТЕ
+      .orderBy('createdAt', descending: true)  
       .snapshots()
       .map((snapshot) => snapshot.docs
           .map((doc) => Task.fromFirestore(doc.data(), doc.id))
@@ -21,7 +21,7 @@ class FirestoreService {
 
   /// Обновление статуса задачи
   Future<void> updateTaskStatus(String taskId, String status) async {
-    await _firestore.collection('tasks').doc(taskId).update({
+    await _firestore.collection('tasks_flutter').doc(taskId).update({
       'status': status,
       'updatedAt': Timestamp.now(),
     });
@@ -32,7 +32,7 @@ class FirestoreService {
   /// Получение потока всех документов пользователя
   Stream<List<Document>> getUserDocuments(String userId) {
     return _firestore
-        .collection('documents')
+        .collection('documents_flutter')
         .where('userId', isEqualTo: userId)
         .orderBy('added', descending: true)
         .snapshots()
@@ -43,18 +43,18 @@ class FirestoreService {
 
   /// Добавление нового документа
   Future<void> addDocument(Document document) async {
-    await _firestore.collection('documents').add(document.toFirestore());
+    await _firestore.collection('documents_flutter').add(document.toFirestore());
   }
 
   /// Удаление документа
   Future<void> deleteDocument(String documentId) async {
-    await _firestore.collection('documents').doc(documentId).delete();
+    await _firestore.collection('documents_flutter').doc(documentId).delete();
   }
 
   /// Очистка всех документов пользователя
   Future<void> clearUserDocuments(String userId) async {
     final querySnapshot = await _firestore
-        .collection('documents')
+        .collection('documents_flutter')
         .where('userId', isEqualTo: userId)
         .get();
     
