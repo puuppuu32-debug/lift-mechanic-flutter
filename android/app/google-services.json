@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "757144311231",
+    "project_id": "lift-mechanic-flutter",
+    "storage_bucket": "lift-mechanic-flutter.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757144311231:android:00d4a923c90d9509cafd0a",
+        "android_client_info": {
+          "package_name": "com.example.lift_mechanic_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAY2xe7U1So0vTLrnbkiR3YH9WadYkqjng"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

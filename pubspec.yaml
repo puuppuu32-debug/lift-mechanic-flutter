@@ -1,0 +1,31 @@
+name: lift_mechanic_flutter
+description: "Приложение для электромехаников по лифтам"
+
+environment:
+  sdk: '>=3.0.0 <4.0.0' 
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  firebase_core: ^2.24.0
+  firebase_auth: ^4.17.3
+  cloud_firestore: ^4.13.3
+  shared_preferences: ^2.2.2
+  url_launcher: ^6.1.11
+  provider: ^6.1.1
+  connectivity_plus: ^5.0.1
+  flutter_local_notifications: ^16.3.0
+  cached_network_image: ^3.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
