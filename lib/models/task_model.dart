@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart'; // ← ДОБАВЬТЕ ИМПОРТ
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Task {
   final String id;
@@ -22,6 +22,20 @@ class Task {
   });
 
   factory Task.fromFirestore(Map<String, dynamic> data, String id) {
+    final rawCreatedAt = data['createdAt'];
+    DateTime parsedCreatedAt;
+
+    if (rawCreatedAt is Timestamp) {
+      parsedCreatedAt = rawCreatedAt.toDate();
+    } else if (rawCreatedAt is String) {
+      parsedCreatedAt = DateTime.parse(rawCreatedAt);
+    } else if (rawCreatedAt is DateTime) {
+      parsedCreatedAt = rawCreatedAt;
+    } else {
+      // fallback: текущее время
+      parsedCreatedAt = DateTime.now();
+    }
+
     return Task(
       id: id,
       title: data['title'] ?? '',
@@ -30,7 +44,7 @@ class Task {
       deadline: data['deadline'] ?? '',
       status: data['status'] ?? 'new',
       userId: data['userId'] ?? '',
-      createdAt: (data['createdAt'] as Timestamp).toDate(), // ← Timestamp теперь распознается
+      createdAt: parsedCreatedAt,
     );
   }
 
@@ -42,7 +56,7 @@ class Task {
       'deadline': deadline,
       'status': status,
       'userId': userId,
-      'createdAt': Timestamp.fromDate(createdAt), // ← Timestamp теперь распознается
+      'createdAt': Timestamp.fromDate(createdAt),
     };
   }
 

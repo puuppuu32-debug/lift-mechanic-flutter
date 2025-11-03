@@ -12,11 +12,16 @@ class FirestoreService {
     return _firestore
         .collection('tasks')
         .where('userId', isEqualTo: userId)
-        .orderBy('createdAt', descending: true)
+        // .orderBy('createdAt', descending: true)
         .snapshots()
-        .map((snapshot) => snapshot.docs
+      .map((snapshot) {
+        final tasks = snapshot.docs
             .map((doc) => Task.fromFirestore(doc.data(), doc.id))
-            .toList());
+            .toList();
+        // Сортируем на клиенте
+        tasks.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        return tasks;
+      });
   }
 
   /// Обновление статуса задачи

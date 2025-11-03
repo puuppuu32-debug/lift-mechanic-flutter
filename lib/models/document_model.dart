@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart'; // ← ДОБАВЬТЕ ИМПОРТ
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Document {
   final String id;
@@ -20,37 +20,37 @@ class Document {
   });
 
   factory Document.fromFirestore(Map<String, dynamic> data, String id) {
-  final rawAdded = data['added'];
-  DateTime parsedAdded;
+    final rawAdded = data['added'];
+    DateTime parsedAdded;
 
-  if (rawAdded is Timestamp) {
-    parsedAdded = rawAdded.toDate();
-  } else if (rawAdded is String) {
-    parsedAdded = DateTime.parse(rawAdded);
-  } else if (rawAdded is DateTime) {
-    parsedAdded = rawAdded;
-  } else {
-    // fallback: текущее время или null, если логика требует
-    parsedAdded = DateTime.now();
+    if (rawAdded is Timestamp) {
+      parsedAdded = rawAdded.toDate();
+    } else if (rawAdded is String) {
+      parsedAdded = DateTime.parse(rawAdded);
+    } else if (rawAdded is DateTime) {
+      parsedAdded = rawAdded;
+    } else {
+      // fallback: текущее время
+      parsedAdded = DateTime.now();
+    }
+
+    return Document(
+      id: id,
+      name: data['name'] ?? '',
+      url: data['url'] ?? '',
+      category: data['category'] ?? 'user',
+      added: parsedAdded,
+      userId: data['userId'] ?? '',
+      cached: data['cached'] ?? false,
+    );
   }
-
-  return Document(
-    id: id,
-    name: data['name'] ?? '',
-    url: data['url'] ?? '',
-    category: data['category'] ?? 'user',
-    added: parsedAdded,
-    userId: data['userId'] ?? '',
-    cached: data['cached'] ?? false,
-  );
-}
 
   Map<String, dynamic> toFirestore() {
     return {
       'name': name,
       'url': url,
       'category': category,
-      'added': Timestamp.fromDate(added), // ← Timestamp теперь распознается
+      'added': Timestamp.fromDate(added),
       'userId': userId,
       'cached': cached,
     };
